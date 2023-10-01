@@ -29,6 +29,16 @@ class Settings(Resource):
         if person:
             return expense_dict.get_expense(person)
         return expense_dict.get_expenses_dict()
+    
+    def put(self):
+        args = request.args
+        person = args.get('person', default=None, type=str)
+        expense = args.get('expense', default=0.0, type=float)
+
+        if person:
+            expense_dict.add_expense(person, expense)
+            return expense_dict.get_expense(person)
+
 
 @api.route('/split/saldos', endpoint='saldos')
 class Saldos(Resource):
@@ -41,6 +51,7 @@ class Saldos(Resource):
             return expense_dict.get_saldo(person)
         
         return expense_dict.get_saldo_dict()
+    
         
 
 @api.route('/split/strategy', endpoint='strategy')
