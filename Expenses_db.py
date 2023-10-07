@@ -11,12 +11,18 @@ class Expenses_db():
     # Expenses
     def add_expense(self, person: str, expenses: float = 0.0):
         result = self.expenses_collection.find_one({'name': person}, {'expense': 1})
-        expense  = result#['expense']
-        if expense:
-            self.expenses_collection.update_one({'expense': expense}, {"$set": { "expense": expense + float(expenses)}})
-            #[person] += float(expenses)
+        if result:
+            expense = result['expense']
+            x = self.expenses_collection.update_one({'expense': expense}, {"$set": { "expense": expense + float(expenses)}})
+            self.expenses_collection.find_one({'_id': x.upserted_id})
+            resp = self.expenses_collection.find_one({'name': person})
         else:
-            self.expenses_collection.insert_one({'name': person, 'expense': float(expenses)})
+            doc = {'name': person, 'expense': float(expenses)}
+            x = self.expenses_collection.insert_one(document=doc)
+            resp = self.expenses_collection.find_one({'_id': x.inserted_id})
+        if resp:
+            resp['_id'] = str(resp['_id'])
+        return resp
         
     def get_expenses(self):
         return list(self.expenses_collection.find({}, {'expense': 1}))
