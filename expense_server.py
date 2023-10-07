@@ -30,7 +30,7 @@ class Settings(Resource):
         person = args.get('person', default=None, type=str)
 
         if person:
-            return expense_db.get_expense(person)
+            return expense_db.get_expense_by_name(person)
         return expense_db.get_expenses_collection()
     
     @api.doc(params=person_description | expense_description)

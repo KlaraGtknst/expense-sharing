@@ -20,22 +20,26 @@ class Expenses_db():
             doc = {'name': person, 'expense': float(expenses)}
             x = self.expenses_collection.insert_one(document=doc)
             resp = self.expenses_collection.find_one({'_id': x.inserted_id})
+        self.refactor_return_id(resp)
+    
+    def refactor_return_id(self, resp):
         if resp:
             resp['_id'] = str(resp['_id'])
         return resp
         
     def get_expenses(self):
-        return list(self.expenses_collection.find({}, {'expense': 1}))
+        return [doc['expense'] for doc in self.expenses_collection.find({}, {'expense': 1})]
     
-    def get_expense(self, person: str):
+    def get_expense_by_name(self, person: str):
         expense = self.expenses_collection.find_one({'name': person}, {'expense': 1})
-        return expense if expense else 0.0
+        return expense['expense'] if expense else 0.0
     
     def get_people(self):
-        return list(self.expenses_collection.find({}, {'name': 1}))
+        return [{doc['name']: str(doc['_id'])} for doc in self.expenses_collection.find({}, {'name': 1})]
     
     def get_expenses_collection(self):
-        return self.expenses_collection.find({})
+        resp = [{'_id': str(doc['_id']), 'name': doc['name'], 'expense': doc['expense']} for doc in self.expenses_collection.find({})]
+        return resp
     
     def reset_expenses(self):
         self.expenses_collection.update_one({}, {"$set": { "expense": 0.0}})
@@ -54,32 +58,50 @@ class Expenses_db():
     #         self.expenses_collection = json.load(infile)
 
     def get_total_expenses(self):
-        return sum(self.expenses_collection.find({}, {'expense': 1}))
+        return sum([doc['expense'] for doc in self.expenses_collection.find({}, {'expense': 1})])
     
     # Saldos
     def split_expenses(self):
         total_expenses = self.get_total_expenses()
-        num_people = len(self.get_people())
+        people = self.get_people()
+        num_people = len(people)
         exp_per_person = total_expenses / num_people
-        for person in self.get_people():
-            self.saldo_collection.insert_one({'name': person, 'saldo': exp_per_person - self.get_expense(person)})  # < 0: creditor, > 0: debtor
-            self.payments_collection.insert_one({'name': person, 'payment_partner': {}})
+        for person in people:
+            name = list(person.keys())[0]
+            expense = self.get_expense_by_name(name)
+            self.saldo_collection.insert_one({'_id': person[name], 'name': name, 'saldo': exp_per_person - expense})  # < 0: creditor, > 0: debtor
+            self.payments_collection.insert_one({'_id': person[name], 'name': name, 'payment_partner': {}})
+
+    def delete_old_dbs(self):
+        self.saldo_collection.delete_many({})
+        self.payments_collection.delete_many({})
 
     def get_saldo_collection(self):
-        return self.saldo_collection.find({})
+        try:
+            self.split_expenses()
+        except:
+            self.delete_old_dbs()
+            self.split_expenses()
+        return [{'_id': str(doc['_id']), 'name': doc['name'], 'saldo': doc['saldo']} for doc in self.saldo_collection.find({})]
     
     def get_saldo(self, person: str):
-        return self.saldo_collection.find_one({'name': person}, {'saldo': 1})
+        try:
+            self.split_expenses()
+        except:
+            self.delete_old_dbs()
+            self.split_expenses()
+        resp = self.saldo_collection.find_one({'name': person}, {'saldo': 1})
+        return resp if resp else {'saldo': 0.0}
     
     def get_creditors(self):
-        return self.saldo_collection.find({'saldo': { "$lt": 0.0 }}, {'name': 1})
+        return [doc['name'] for doc in self.saldo_collection.find({'saldo': { "$lt": 0.0 }}, {'name': 1})]
     
     def get_debtors(self):
-        return self.saldo_collection.find({'saldo': { "$gt": 0.0 }}, {'name': 1})
+        return [doc['name'] for doc in self.saldo_collection.find({'saldo': { "$gt": 0.0 }}, {'name': 1})]
     
     # Who pays whom
     def get_payments_collection(self):
-        return self.payments_collection.find({})   # {debtor: {creditor: amount}}
+        return [{'_id': str(doc['_id']), 'name': doc['name'], 'payment_partner': doc['payment_partner']} for doc in self.payments_collection.find({})]
     
     # def get_payment_strategy(self):
     #     for debtor in self.get_debtors():
