@@ -1,27 +1,25 @@
 import { useState, useEffect } from 'react';
 
 const Fetch = () => {
-  const [people, listPeople] = useState([]);
+  const [people, setPeople] = useState([]);
   useEffect(() => {
     fetch('http://127.0.0.1:5000/settings')
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
-
+        setPeople(data)
       });
   }, []);
   return (
-    <div>
+      <div>
         <h1>People</h1>
-      {/*{people.map((person) => (*/}
-      {/*  <div key={person._id}>*/}
-      {/*    <h2>{person.name}</h2>*/}
-      {/*    <p>{person.expense}</p>*/}
-      {/*  </div>*/}
-      {/*))}*/}
-    </div>
+        <ul>
+          {people.map((person, index) => (
+              <li key={person._id}>{person.name}</li>
+          ))}
+        </ul>
+      </div>
   );
 };
 export default Fetch;
