@@ -3,6 +3,9 @@ import NumberInputBasic from "./components/NumberInput.tsx";
 import Fetch from "./components/fetch.jsx";
 import * as PropTypes from "prop-types";
 import '@vaadin/horizontal-layout';
+import {Button} from "@mui/material";
+import {styled} from "@mui/system";
+import {useState} from "react";
 
 
 TextField.propTypes = {
@@ -12,6 +15,19 @@ TextField.propTypes = {
     variant: PropTypes.string,
     id: PropTypes.string
 };
+
+function clickMe() {
+  alert("You clicked me!");
+}
+
+const ButtonToggle = styled(Button)`
+  opacity: 0.7;
+  ${({ active }) =>
+    active &&
+    `
+    opacity: 1; 
+  `}
+`;
 export default function App() {
   return (
       <div className="App">
@@ -21,6 +37,11 @@ export default function App() {
           <vaadin-horizontal-layout theme="spacing padding">
               <div><TextField/></div>
               <div><NumberInputBasic/></div>
+              <div>
+                  <Button onClick={clickMe}>
+                      Pink theme
+                  </Button>
+              </div>
           </vaadin-horizontal-layout>
 
       </div>
