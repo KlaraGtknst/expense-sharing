@@ -35,7 +35,7 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
 export default function NumberInputBasic() {
   const [value, setValue] = React.useState<number | null>(null);
   return (
-    <NumberInput
+    <NumberInput required
       aria-label="Demo number input"
       placeholder="Type a number…"
       value={value}
