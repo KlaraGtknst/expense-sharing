@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restx import Api, Resource
-#from flask_cors import CORS
+from flask_cors import CORS
 from Expenses_db import *
 
 
@@ -13,7 +13,7 @@ flask --app expense_server run --debug --port 5000
 
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Expense sharing', description='API of the project.')
-#cors = CORS(app)
+cors = CORS(app)
 
 expense_db = Expenses_db()
 
