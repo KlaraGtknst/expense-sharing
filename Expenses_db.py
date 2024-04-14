@@ -65,7 +65,7 @@ class Expenses_db():
         total_expenses = self.get_total_expenses()
         people = self.get_people()
         num_people = len(people)
-        exp_per_person = total_expenses / num_people
+        exp_per_person = total_expenses / max(num_people, 1)
         for person in people:
             name = list(person.keys())[0]
             expense = self.get_expense_by_name(name)
@@ -120,6 +120,7 @@ class Expenses_db():
 
 
 if __name__ == '__main__':
+    print('Running Expenses_db.py')
     expense_db = Expenses_db()
     print(expense_db.client.list_database_names())
     expense_db.add_expense('Jorge', 10.0)
