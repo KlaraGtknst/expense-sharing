@@ -20,7 +20,7 @@ class Expenses_db():
             doc = {'name': person, 'expense': float(expenses)}
             x = self.expenses_collection.insert_one(document=doc)
             resp = self.expenses_collection.find_one({'_id': x.inserted_id})
-        self.refactor_return_id(resp)
+        return self.refactor_return_id(resp)
     
     def refactor_return_id(self, resp):
         if resp:

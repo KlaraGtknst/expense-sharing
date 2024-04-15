@@ -36,13 +36,15 @@ class Settings(Resource):
     @api.doc(params=person_description | expense_description)
     def post(self):
         args = request.args
-        person = args.get('person', default=None, type=str)
-        expense = args.get('expense', default=0.0, type=float)
+        body = request.get_json()
+        person = body['person']
+        expense = body.get('expense', 0.0)
 
         if person:
-            resp = expense_db.add_expense(person, expense)
+            print(person, expense)
+            resp = expense_db.add_expense(person=person, expenses=expense)
             print(resp)
-            return resp
+            return resp # FIXME: returns NULL -> object is not added in database
 
 
 @api.doc(params=person_description)
