@@ -21,11 +21,11 @@ person_description = {'person': {'description':'Name of person', 'type':'string'
 expense_description = {'expense': {'description':'Expense of person', 'type':'float'}}
 
 
-@api.route('/settings', endpoint='settings')
-class Settings(Resource):
+@api.route('/people', endpoint='people')
+class People(Resource):
     @api.doc(params=person_description)
     def get(self):
-        # http://127.0.0.1:5000/settings
+        # http://127.0.0.1:5000/people
         args = request.args
         person = args.get('person', default=None, type=str)
 

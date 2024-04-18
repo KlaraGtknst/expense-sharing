@@ -24,7 +24,7 @@ function clickMe() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ person: 'React POST Request Example', expense: 0 })
     };
-    fetch('http://127.0.0.1:5000/settings', requestOptions)
+    fetch('http://127.0.0.1:5000/people', requestOptions)
         .then(response => response.json())
         .then(data => this.setState({ postId: data.id }));
 }
@@ -49,11 +49,8 @@ export default function App() {
           <h1>Expense Sharing</h1>
           <h2>WIP</h2>
           <div><Fetch  people={newPeople} addPeople={addPeople} /></div>
-          <vaadin-horizontal-layout theme="spacing padding">
+          <div><InputNewData/></div>  # TODO: callback an class und dann zu fetch: https://react.dev/learn/passing-props-to-a-component
 
-                <div><InputNewData/></div>  # TODO: callback an class und dann zu fetch: https://react.dev/learn/passing-props-to-a-component
-
-          </vaadin-horizontal-layout>
 
       </div>
   );

@@ -18,7 +18,7 @@ function TextFieldAndPostRequest() {
 
     try {
       console.log(textInputValue, parseFloat(numberInputValue))
-      const response = await fetch('http://127.0.0.1:5000/settings', {
+      const response = await fetch('http://127.0.0.1:5000/people', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -5,7 +5,7 @@ import * as React from "react";
 const Fetch = ({newPeople, addPeople}) => {
   const [people, setPeople] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/settings')
+    fetch('http://127.0.0.1:5000/people')
       .then((res) => {
         return res.json();
       })
