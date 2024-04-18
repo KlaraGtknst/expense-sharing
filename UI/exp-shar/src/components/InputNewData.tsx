@@ -23,7 +23,7 @@ function TextFieldAndPostRequest() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ person: textInputValue, expenses: parseFloat(numberInputValue) })
+        body: JSON.stringify({ person: textInputValue, expense: parseFloat(numberInputValue) })
       });
 
       if (!response.ok) {
@@ -31,7 +31,7 @@ function TextFieldAndPostRequest() {
       }
 
       // Handle successful response if needed
-      console.log('Data sent successfully', response, JSON.stringify({ person: textInputValue, expenses: parseFloat(numberInputValue) }));
+      console.log('Data sent successfully', response, JSON.stringify({ person: textInputValue, expense: parseFloat(numberInputValue) }));
     } catch (error) {
       console.error('Error:', error.message);
     }

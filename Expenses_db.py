@@ -9,15 +9,15 @@ class Expenses_db():
         self.payments_collection = self.database["payments"]
 
     # Expenses
-    def add_expense(self, person: str, expenses: float = 0.0):
-        result = self.expenses_collection.find_one({'name': person}, {'expense': 1})
+    def add_expense(self, person: str, expense: float = 0.0):
+        result = self.expenses_collection.find_one({'name': person}, projection={'expense': True})
         if result:
-            expense = result['expense']
-            x = self.expenses_collection.update_one({'expense': expense}, {"$set": { "expense": expense + float(expenses)}})
+            old_expense = result['expense']
+            x = self.expenses_collection.update_one({'name': person}, {"$set": { "expense": old_expense + float(expense)}})
             self.expenses_collection.find_one({'_id': x.upserted_id})
             resp = self.expenses_collection.find_one({'name': person})
         else:
-            doc = {'name': person, 'expense': float(expenses)}
+            doc = {'name': person, 'expense': float(expense)}
             x = self.expenses_collection.insert_one(document=doc)
             resp = self.expenses_collection.find_one({'_id': x.inserted_id})
         return self.refactor_return_id(resp)

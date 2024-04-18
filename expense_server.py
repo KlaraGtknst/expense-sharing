@@ -41,11 +41,10 @@ class Settings(Resource):
         expense = body.get('expense', 0.0)
 
         if person:
-            print(person, expense)
-            resp = expense_db.add_expense(person=person, expenses=expense)
+            print('value at expense_server.py', person, expense)
+            resp = expense_db.add_expense(person=person, expense=expense)
             print(resp)
-            return resp # FIXME: returns NULL -> object is not added in database
-
+            return resp
 
 @api.doc(params=person_description)
 @api.route('/split/saldos', endpoint='saldos')
