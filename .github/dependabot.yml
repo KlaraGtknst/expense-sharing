@@ -10,4 +10,7 @@ updates:
     schedule:
       interval: "weekly" 
 
-  # TODO: update UI components
+  - package-ecosystem: "npm" 
+    directory: "/exp-shar" # Location of package manifests, i.e. package.json
+    schedule:
+      interval: "weekly" 
