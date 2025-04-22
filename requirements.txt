@@ -28,7 +28,7 @@ Flask==2.3.3
 Flask-Cors==4.0.0
 flask-restx==1.1.0
 flask-scaffolding==0.0.29
-fonttools==4.51.0
+fonttools==4.57.0
 fqdn==1.5.1
 h11==0.14.0
 httpcore==1.0.5
