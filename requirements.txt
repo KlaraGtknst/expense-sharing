@@ -79,7 +79,7 @@ pexpect==4.9.0
 pillow==10.3.0
 platformdirs==4.2.0
 prometheus_client==0.20.0
-prompt-toolkit==3.0.43
+prompt-toolkit==3.0.51
 psutil==7.0.0
 ptyprocess==0.7.0
 pure-eval==0.2.2
