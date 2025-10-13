@@ -85,7 +85,7 @@ ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.22
 Pygments==2.17.2
-pymongo==4.6.3
+pymongo==4.15.3
 pyparsing==3.2.3
 python-dateutil==2.8.2
 python-json-logger==3.3.0
