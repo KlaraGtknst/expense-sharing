@@ -92,7 +92,7 @@ python-json-logger==3.3.0
 pytz==2023.3.post1
 PyYAML==6.0.3
 pyzmq==25.1.2
-qtconsole==5.5.1
+qtconsole==5.7.0
 QtPy==2.4.3
 referencing==0.36.2
 requests==2.32.4
