@@ -12,7 +12,7 @@ beautifulsoup4==4.14.2
 bleach==6.2.0
 blinker==1.6.2
 certifi==2024.7.4
-cffi==1.17.1
+cffi==2.0.0
 charset-normalizer==3.3.2
 click==8.1.7
 comm==0.2.3
